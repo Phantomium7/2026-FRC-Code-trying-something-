@@ -143,7 +143,7 @@ public class RobotContainer {
         joystick.povLeft().onTrue(new ResetOdometryLimelight(drivetrain));
         joystick.povDown().onTrue(new InstantCommand(() -> drivetrain.resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)))));
         joystick.L2().whileTrue(new IntakeCommand(m_intakeSubsystem, 10));
-        joystick.().whileTrue(new OutakeCommand(m_intakeSubsystem, 10));
+        joystick.square().whileTrue(new OutakeCommand(m_intakeSubsystem, 10));
         joystick.cross().whileTrue(new AlignToTrench(drivetrain, () -> MathUtil.applyDeadband(-joystick.getLeftX(), 0.10) * MaxSpeed * speedMultiplier));
         joystick.triangle().onTrue(new HopperCommand(m_hopperSubsystem, HopperConstants.fullyExtended));
         
