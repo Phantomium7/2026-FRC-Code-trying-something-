@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.util.ElasticDashboard;
 import frc.robot.drive.TunerConstants;
@@ -71,7 +71,7 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    private final PS5Controller joystick = new PS5Controller(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -104,7 +104,7 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() -> {
 
-                boolean isPressed = joystick.leftBumper().getAsBoolean();
+                boolean isPressed = joystick.getL1ButtonPressed();
                 speedMultiplier = isPressed ? 0.45 : 0.8; 
                 
                 return drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * speedMultiplier) 
@@ -120,7 +120,7 @@ public class RobotContainer {
         );
         
         
-        joystick.rightTrigger().whileTrue(
+        joystick.R2().whileTrue(
             new ParallelCommandGroup(
                 new ShootFromHubDistance(m_leftShooterSubsystem, m_rightShooterSubsystem, m_limeLightSubsystem),
                 new AlignRotationToHubOdometry(
@@ -139,13 +139,13 @@ public class RobotContainer {
             )
         );
 
-        joystick.rightBumper().whileTrue(new KickerCommandGroup(m_kickerSubsystem, m_rollerSubsystem, m_intakeSubsystem, m_hopperSubsystem)).onFalse(new HopperCommand(m_hopperSubsystem, HopperConstants.fullyExtended));
+        joystick.R1().whileTrue(new KickerCommandGroup(m_kickerSubsystem, m_rollerSubsystem, m_intakeSubsystem, m_hopperSubsystem)).onFalse(new HopperCommand(m_hopperSubsystem, HopperConstants.fullyExtended));
         joystick.povLeft().onTrue(new ResetOdometryLimelight(drivetrain));
         joystick.povDown().onTrue(new InstantCommand(() -> drivetrain.resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)))));
-        joystick.leftTrigger().whileTrue(new IntakeCommand(m_intakeSubsystem, 10));
-        joystick.x().whileTrue(new OutakeCommand(m_intakeSubsystem, 10));
-        joystick.a().whileTrue(new AlignToTrench(drivetrain, () -> MathUtil.applyDeadband(-joystick.getLeftX(), 0.10) * MaxSpeed * speedMultiplier));
-        joystick.y().onTrue(new HopperCommand(m_hopperSubsystem, HopperConstants.fullyExtended));
+        joystick.L2().whileTrue(new IntakeCommand(m_intakeSubsystem, 10));
+        joystick.().whileTrue(new OutakeCommand(m_intakeSubsystem, 10));
+        joystick.cross().whileTrue(new AlignToTrench(drivetrain, () -> MathUtil.applyDeadband(-joystick.getLeftX(), 0.10) * MaxSpeed * speedMultiplier));
+        joystick.triangle().onTrue(new HopperCommand(m_hopperSubsystem, HopperConstants.fullyExtended));
         
 
         // joystick.a().onTrue(new HopperCommand(m_hopperSubsystem, HopperConstants.fullyExtended));
