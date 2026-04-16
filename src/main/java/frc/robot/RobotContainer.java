@@ -53,6 +53,7 @@ import frc.robot.shooter.KickerRollerCommand;
 import frc.robot.shooter.KickerSubsystem;
 import frc.robot.shooter.LeftShooterSubsystem;
 import frc.robot.shooter.RightShooterSubsystem;
+import frc.robot.rumble.RumbleCommand;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
@@ -148,6 +149,7 @@ public class RobotContainer {
         joystick.square().whileTrue(new OutakeCommand(m_intakeSubsystem, 10));
         joystick.cross().whileTrue(new AlignToTrench(drivetrain, () -> MathUtil.applyDeadband(-joystick.getLeftX(), 0.10) * MaxSpeed * speedMultiplier));
         joystick.triangle().onTrue(new HopperCommand(m_hopperSubsystem, HopperConstants.fullyExtended));
+        joystick.touchpad().onTrue(new RumbleCommand(1.5, 0.5));
         
 
         // joystick.a().onTrue(new HopperCommand(m_hopperSubsystem, HopperConstants.fullyExtended));

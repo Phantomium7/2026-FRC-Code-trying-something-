@@ -32,7 +32,7 @@ public class KickerCommandGroup extends SequentialCommandGroup {
                 ),
             new ParallelCommandGroup(
                 new IntakeCommand(m_intakesubsystem, 10),
-                new RumbleCommand().withTimeout(1.0)
+                new RumbleCommand(1.0, 0.5)
             )
                 
             
