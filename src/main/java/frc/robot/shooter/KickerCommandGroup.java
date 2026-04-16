@@ -15,6 +15,7 @@ import frc.robot.intake.IntakeAutoStartCommandGroup;
 import frc.robot.intake.IntakeCommand;
 import frc.robot.intake.IntakeSubsystem;
 import frc.robot.roller.RollerSubsystem;
+import frc.robot.rumble.RumbleCommand;
 
 public class KickerCommandGroup extends SequentialCommandGroup {
     public KickerCommandGroup(KickerSubsystem m_kickerSubsystem, RollerSubsystem m_rollerSubsystem, IntakeSubsystem m_intakesubsystem, HopperSubsystem m_hopperSubsystem) {
@@ -29,8 +30,11 @@ public class KickerCommandGroup extends SequentialCommandGroup {
                         new WaitCommand(0.25)
                     )
                 ),
-                new IntakeCommand(m_intakesubsystem, 10)
-
+            new ParallelCommandGroup(
+                new IntakeCommand(m_intakesubsystem, 10),
+                new RumbleCommand().withTimeout(1.0)
+            )
+                
             
 
             )
